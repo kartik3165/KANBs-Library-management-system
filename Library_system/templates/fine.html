@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load static %}
+    {% block content %}
+        <div class="main-content">
+            <h1> Collect Fine </h1>
+            <div class="issue_form">
+                <form id="issueForm" method="POST" action="/issue-book/">
+                <!-- {% csrf_token %} -->
+                    <label for="book">student id</label><br>
+                    <input type="text" id="book" name="book" autocomplete="off"><br>
+                    <label for="">show total fine amount </label><br>
+                    <button type="submit">Get fine</button>
+                    <button type="submit">Collect fine</button>
+                </form>
+                <!-- <p>error message</p> -->
+            </div>
+
+            <div class="table-container">
+                <p style="color: white;"> *recent 5 entries </p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 100px;">Student ID</th>
+                            <th>Name</th>
+                            <th>Department</th>
+                            <th>Issue Id</th>
+                            <th style="width: 50px;">Total Fine</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="height: min-content;">
+                            <td>1</td>
+                            <td>comp</td>
+                            <td>The Great Gatsby</td>
+                            <td>F. Scott Fitzgerald</td>
+                            <td>Available</td>
+                            <td>Paid </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <a class="btn" href="{% url 'student_table' %}">See All</a>
+            </div>
+        </div>
+{% endblock %}

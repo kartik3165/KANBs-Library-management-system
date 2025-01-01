@@ -1,0 +1,51 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static '/css/tables.css' %}">
+    <link rel="stylesheet" href="{% static '/css/issue_book.css' %}">
+</head>
+<body>
+    <div class="navbar">
+        <h1>Library Dashboard</h1>
+    </div>
+    <h2> Issue Book List </h2>
+        <label style="color: black;">Search</label>
+        <input type="text">
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Issue ID</th>
+                    <th>Book Name</th>
+                    <th>Student Name</th>
+                    <th>Issue Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>The Great Gatsby</td>
+                    <td>F. Scott Fitzgerald</td>
+                    <td>Available</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>1984</td>
+                    <td>George Orwell</td>
+                    <td>Issued</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>To Kill a Mockingbird</td>
+                    <td>Harper Lee</td>
+                    <td>Available</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

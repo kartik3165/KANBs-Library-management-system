@@ -1,0 +1,29 @@
+.issue_form {
+    align-content: center;
+    align-items: center;
+    text-align: center;
+    background-color: #3a3f58;
+    padding: 20px 0 0 10px;
+    border-radius: 15px;
+    color: white;
+}
+
+.issue_form input {
+    width: 200px;
+}
+
+.issue_form button {
+    margin-top: 20px;
+    padding: 6px;
+    width: auto;
+    font-size: 1rem;
+    color: #3a3f58;
+    background-color: white;
+    font-weight: 600;
+    border-radius: 15px;
+}
+
+h1 {
+    text-align: center;
+    color: white;
+}

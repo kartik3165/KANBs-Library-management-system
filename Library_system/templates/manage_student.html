@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% load static %}
+    {% block content %}
+        <div class="main-content">
+            <h1> Manage Students </h1>
+            <button id="add">Add student</button>
+        
+            <div class="issue_form" id="form" style="display: none;">
+                            <form id="issueForm" method="GET" action="add-student">
+                                {% csrf_token %}
+                                <label for="book">Name</label><br>
+                                <input type="text" id="name" name="name" autocomplete="off" value="{{data.name}}"><br>
+                        
+                                <label for="book">email</label><br>
+                                <input type="email" id="email" name="email" autocomplete="off" value="{{data.email}}"><br>
+                        
+                                <label for="user">Department</label><br>
+                                <select name="dept_spinner" id="dept_spinner" >
+                                    {% for option in dept_data %}
+                                    <option value="{{option}}">{{option}}</option>
+                                    {% endfor %}
+                                </select><br><br>
+                        
+                                <label for="user">Phone Number</label><br>
+                                <input type="text" id="ph_no" name="ph_no" required value="{{data.phone}}"><br><br>
+                        
+                                <input type="submit" value="Add Student" class="submit">
+                            </form>
+                        </div>
+                        <div class="table-container">
+                            <p style="color: white;"> *recent 5 entries </p>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th style="width: 100px;">Student ID</th>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Department</th>
+                                        <th>Phone No.</th>
+                                        <th>Admission Date</th>
+                                        <th style="width: 50px;">Total Fine</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for data in student_data %}
+                                    <tr style="height: min-content;">     
+                                        <td>{{data.id}}</td>
+                                            <td>{{data.name}}</td>
+                                            <td>{{data.email}}</td>
+                                            <td>{{data.department}}</td>
+                                            <td>{{data.phone}}</td>
+                                            <td>{{data.created_at}}</td>
+                                            <td>00</td>
+                                            </tr> 
+                                    {% endfor %} 
+                                </tbody>
+                            </table>
+                            <a class="btn" href="{% url 'student_table' %}">See All</a>
+                        </div>
+            </div>
+            <script>
+                // JavaScript to toggle visibility
+               const button = document.getElementById('add');
+               const div = document.getElementById('form');
+
+               button.addEventListener('click', () => {
+                   if (div.style.display === 'none' || div.style.display === '') {
+                       div.style.display = 'block';
+                       button.textContent = 'Hide';
+                   } else {
+                       div.style.display = 'none';
+                       button.textContent = 'Add Student';
+                   }
+               });
+           </script>
+            
+        </div>
+{% endblock %}

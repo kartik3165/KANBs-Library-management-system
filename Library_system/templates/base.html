@@ -1,0 +1,39 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library Management System Dashboard</title>
+    <link rel="stylesheet" href="{% static '/css/style.css' %}">
+    <link rel="stylesheet" href="{% static '/css/tables.css' %}">
+    <link rel="stylesheet" href="{% static '/css/manage_student.css' %}">
+</head>
+<body>
+    <div class="navbar">
+        <h1>Library Dashboard</h1>
+    </div>
+
+    <div class="container">
+        <div class="sidebar">
+            <h2>Menu</h2>
+            <ul>
+                <li><a href="{% url 'home' %}">Dashboard</a></li>
+                <li><a href="{% url 'manage_book' %}">Manage Books</a></li>
+                <li><a href="{% url 'manage_student' %}">Manage Students</a></li>
+                <li><a href="{% url 'issue_book' %}">Issue Books</a></li>
+                <li><a href="{% url 'return_book' %}">Return Books</a></li>
+                <li><a href="{% url 'fine' %}">Collect fine</a></li>
+
+            </ul>
+        </div>
+        {% block content %}
+
+        {% endblock %}
+    </div>
+    <div class="footer">
+        <p>&copy; 2024 Library Management System. All rights reserved.</p>
+    </div>
+    </body>
+</html>
+    

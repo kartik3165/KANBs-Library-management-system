@@ -1,0 +1,63 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static '/css/tables.css' %}">
+    <link rel="stylesheet" href="{% static '/css/manage_book.css' %}">
+</head>
+<body>
+    <div class="navbar">
+        <h1>Library Dashboard</h1>
+    </div>
+    <div class="table-container">
+        <h2> Books List </h2>
+            <div class="issue_form">
+                <h1> Manage Books </h1>
+                <form id="issueForm" method="POST" action="/issue-book/">
+                <!-- {% csrf_token %} -->
+                    <label for="book">Book Name</label><br>
+                    <input type="text" id="book" name="book" autocomplete="off"><br>
+                    <label for="user">Book Quantity</label><br>
+                    <input type="number" id="user" name="user" required><br>
+                    <label for="user">Book Author</label><br>
+                    <input type="text" id="user" name="user" required><br>
+                    <button type="submit">Update Book</button>
+                </form>
+            <!-- <p>error message</p> -->            
+</div>
+        <label style="color: black;">Search</label>
+        <input type="text" style="margin: 10px;">
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 100px;">Book ID</th>
+                    <th>Title</th>
+                    <th>Date</th>
+                    <th>Author</th>
+                    <th style="width: 50px;">Quantity Available</th>
+                    <th>Action</th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="height: min-content;">
+                    <td>1</td>
+                    <td>The Great Gatsby</td>
+                    <td>sadc</td>
+                    <td>F. Scott Fitzgerald</td>
+                    <td>Available</td>
+                    <td>
+                        <ul class="activity_cell">
+                            <li><a href="#">Update</a></li>
+                            <li><a href="#">Delete</a></li>
+                        </ul>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load static %}
+    {% block content %}
+        <div class="main-content">
+            <h1> Issue Book </h1>
+            <div class="issue_form">
+                <form id="issueForm" method="POST" action="/issue-book/">
+                <!-- {% csrf_token %} -->
+                    <label for="book">Book  :</label>
+                    <input type="text" id="book" name="book" autocomplete="off">
+                    <ul id="suggestions"></ul>
+                    <label for="user">UserID:</label>
+                    <input type="text" id="user" name="user" required><br>
+                    <button type="submit">Issue Book</button>
+                </form>
+                <!-- <p>error message</p> -->
+            </div>
+            <p style="color: white;">*recent 5 entries</p>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Issue ID</th>
+                            <th>Book Name</th>
+                            <th>Student Name</th>
+                            <th>Issue Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>The Great Gatsby</td>
+                            <td>F. Scott Fitzgerald</td>
+                            <td>Available</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>1984</td>
+                            <td>George Orwell</td>
+                            <td>Issued</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>To Kill a Mockingbird</td>
+                            <td>Harper Lee</td>
+                            <td>Available</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <a class="btn" href="{% url 'issue_table' %}">See All</a>
+            </div>
+        </div>
+    {% endblock %}
+

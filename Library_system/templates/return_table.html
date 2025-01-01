@@ -1,0 +1,42 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static '/css/tables.css' %}">
+</head>
+<body>
+    <div class="navbar">
+        <h1>Library Dashboard</h1>
+    </div>
+    <h2> Return book List </h2>
+        <label style="color: black;">Search</label>
+        <input type="text">
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Issue ID</th>
+                    <th>Book Name</th>
+                    <th>Student Name</th>
+                    <th>Student id</th>
+                    <th>Return Date</th>
+                    <th>Fine</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>The Great Gatsby</td>
+                    <td>F. Scott Fitzgerald</td>
+                    <td>smc</td>
+                    <td>sdf</td>
+                    <td>df</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
