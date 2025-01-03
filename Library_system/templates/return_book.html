@@ -4,17 +4,70 @@
         <div class="main-content">
             <h1> Return Book </h1>
             <div class="issue_form">
-                <form id="issueForm" method="POST" action="/issue-book/">
-                <!-- {% csrf_token %} -->
-                    <label for="book">Book  :</label>
-                    <input type="text" id="book" name="book" autocomplete="off">
-                    <ul id="suggestions"></ul>
-                    <label for="user">UserID:</label>
-                    <input type="text" id="user" name="user" required><br>
-                    <button type="submit">Return Book</button>
+                <form method="post" id="issueForm">
+                    {% csrf_token %}
+                    <label for="student_id">Student ID:</label>
+                    <input type="text" id="student_id" name="student_id" required>
+                    <button type="submit">Get Issue Data</button>
                 </form>
-                <!-- <p>error message</p> -->
+                
+                                
+                <div id="issue_data"></div>  <!-- This is where issue data will be inserted -->
+                  
+                <table id="data_table">
+                    <thead>
+                        <tr>
+                            <th>Issue ID</th>
+                            <th>Book Name</th>
+                            <th>Issue Date</th>
+                            <th>Due Date</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="issue_data_body">
+                        <!-- Data will be dynamically inserted here -->
+                    </tbody>
+                </table>
             </div>
+            <script>
+                document.getElementById('issueForm').addEventListener('submit', function(event) {
+                    event.preventDefault();  // Prevents the form from reloading the page
+            
+                    const studentId = document.getElementById('student_id').value;
+            
+                    fetch("{% url 'get_issue_data' %}", {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                        },
+                        body: JSON.stringify({
+                            'student_id': studentId  // Send the data as JSON
+                        })
+                    })
+                    .then(response => response.json())  // Expect JSON response
+                    .then(data => {
+                        const issueDataBody = document.getElementById('issue_data_body');
+                        issueDataBody.innerHTML = '';  // Clear the table body before adding new data
+            
+                        // Loop through each item in the response data and add a row for each issue
+                        data.issue_data.forEach(issue => {
+                            const row = document.createElement('tr');
+                            row.innerHTML = `
+                                <td>${issue.id}</td>
+                                <td>${issue.book_title}</td>
+                                <td>${issue.issue_date}</td>
+                                <td>${issue.due_date}</td>
+                                <td><a href="/return_order/${issue.id}" style="color: blue;">Return Book</a></td>
+                            `;
+                            issueDataBody.appendChild(row);
+                        });
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+                });
+            </script>
 
             <div class="table-container">
                 <p style="color: white;"> *recent 5 entry</p>

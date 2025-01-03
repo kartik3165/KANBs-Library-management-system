@@ -21,29 +21,29 @@
                 <tr>
                     <th>Issue ID</th>
                     <th>Book Name</th>
+                    <th>Book ID</th>
                     <th>Student Name</th>
+                    <th>Student ID</th>
                     <th>Issue Date</th>
+                    <th>Due Date</th>
+                    <th>Status</th>
+                    <th>fine</th>
                 </tr>
             </thead>
             <tbody>
+                {% for data in issue_data %}
                 <tr>
-                    <td>1</td>
-                    <td>The Great Gatsby</td>
-                    <td>F. Scott Fitzgerald</td>
-                    <td>Available</td>
+                    <td>{{data.id}}</td>
+                    <td>{{data.book.title}}</td>
+                    <td>{{data.book.id}}</td>
+                    <td>{{data.student.name}}</td>
+                    <td>{{data.student.id}}</td>
+                    <td>{{data.issue_date}}</td>
+                    <td>{{data.due_date}}</td>
+                    <td>{{data.status}}</td>
+                    <td>{{data.calculate_fine}}</td>
                 </tr>
-                <tr>
-                    <td>2</td>
-                    <td>1984</td>
-                    <td>George Orwell</td>
-                    <td>Issued</td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td>To Kill a Mockingbird</td>
-                    <td>Harper Lee</td>
-                    <td>Available</td>
-                </tr>
+                {% endfor %}
             </tbody>
         </table>
     </div>

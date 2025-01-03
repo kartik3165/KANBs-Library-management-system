@@ -13,32 +13,6 @@
         <h1>Library Dashboard</h1>
     </div>
     <div class="table-container">
-        <div class="issue_form" id="form" style="display: none;">
-            <form id="issueForm" method="post" action="/update_student/{{ data.id }}">
-                {% csrf_token %}
-                <label for="book">Name</label><br>
-                <input type="text" id="name" name="name" autocomplete="off" value="{{ data.name }}"><br>
-        
-                <label for="book">email</label><br>
-                <input type="email" id="email" name="email" autocomplete="off" value="{{data.email}}"><br>
-        
-                <label for="user">Department (SELECT DEPT. AGAIN )</label><br>
-                <select name="dept_spinner" id="dept_spinner">
-                    {% for option in dept_data %}
-                        <option value="{{ option.name }}" {% if option.name == data.department %}selected{% endif %}>
-                            {{ option.name }}
-                        </option>
-                    {% endfor %}
-                </select>
-                <br><br>
-        
-                <label for="user">Phone Number</label><br>
-                <input type="number" id="ph_no" name="ph_no" required value="{{data.phone}}"><br><br>
-        
-                <input type="submit" value="Update Student" class="submit">
-            </form>
-        </div>
-        
         <h2> Student List </h2>
         <label style="color: black;">Search</label>
         <input type="text">
@@ -76,7 +50,7 @@
                         <ul class="activity_cell">
                             <li class="load_button" data-id="{{ data.id }}">
                                 <a style="color: white;">Update Student</a>
-                            </li>
+                            </li>                                                        
                             <li><a href="{% url 'delete_student' data.id %}">Delete student</a></li>
                             <li><a href="{% url 'fine' %}">Update Fine</a></li>
                         </ul>
@@ -93,16 +67,6 @@
                                 <label for="book">Email</label><br>
                                 <input type="email" id="email" name="email" autocomplete="off" value="{{ data.email }}"><br>
             
-                                <label for="user">Department (SELECT DEPT. AGAIN)</label><br>
-                                <select name="dept_spinner" id="dept_spinner">
-                                    {% for option in dept_data %}
-                                    <option value="{{ option.name }}" {% if option.name == data.department %}selected{% endif %}>
-                                        {{ option.name }}
-                                    </option>
-                                    {% endfor %}
-                                </select>
-                                <br><br>
-            
                                 <label for="user">Phone Number</label><br>
                                 <input type="number" id="ph_no" name="ph_no" required value="{{ data.phone }}"><br><br>
             
@@ -113,30 +77,27 @@
                 </tr>
                 {% endfor %}
             </tbody>
-            
         </table>
     </div>
-    <script> 
+    <script>
         document.addEventListener("DOMContentLoaded", () => {
             const loadButtons = document.querySelectorAll(".load_button");
             loadButtons.forEach(button => {
-                button.addEventListener("click", () => {
+                button.addEventListener("click", (event) => {
+                    event.preventDefault(); // Prevents the default navigation
                     const id = button.getAttribute("data-id");
                     const formRow = document.getElementById(`form-row-${id}`);
                     
                     if (formRow.style.display === "none" || !formRow.style.display) {
-                        // Show the form and change the button text
                         formRow.style.display = "table-row";
                         button.textContent = "Hide Form";
                     } else {
-                        // Hide the form and change the button text
                         formRow.style.display = "none";
                         button.textContent = "Update Student";
                     }
                 });
             });
         });
-                       
     </script>
 </body>
 </html>

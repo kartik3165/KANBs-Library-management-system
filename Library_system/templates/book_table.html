@@ -14,20 +14,6 @@
     </div>
     <div class="table-container">
         <h2> Books List </h2>
-            <div class="issue_form">
-                <h1> Manage Books </h1>
-                <form id="issueForm" method="POST" action="/issue-book/">
-                <!-- {% csrf_token %} -->
-                    <label for="book">Book Name</label><br>
-                    <input type="text" id="book" name="book" autocomplete="off"><br>
-                    <label for="user">Book Quantity</label><br>
-                    <input type="number" id="user" name="user" required><br>
-                    <label for="user">Book Author</label><br>
-                    <input type="text" id="user" name="user" required><br>
-                    <button type="submit">Update Book</button>
-                </form>
-            <!-- <p>error message</p> -->            
-</div>
         <label style="color: black;">Search</label>
         <input type="text" style="margin: 10px;">
         <table>
@@ -35,29 +21,84 @@
                 <tr>
                     <th style="width: 100px;">Book ID</th>
                     <th>Title</th>
-                    <th>Date</th>
                     <th>Author</th>
+                    <th>Quantity</th>
                     <th style="width: 50px;">Quantity Available</th>
+                    <th>Category</th>
+                    <th>Publication year</th>
+                    <th>Added at</th>
+                    <th>Updated at</th>
                     <th>Action</th>
-                    
                 </tr>
             </thead>
             <tbody>
-                <tr style="height: min-content;">
-                    <td>1</td>
-                    <td>The Great Gatsby</td>
-                    <td>sadc</td>
-                    <td>F. Scott Fitzgerald</td>
-                    <td>Available</td>
-                    <td>
-                        <ul class="activity_cell">
-                            <li><a href="#">Update</a></li>
-                            <li><a href="#">Delete</a></li>
-                        </ul>
-                    </td>
-                </tr>
+                {% for data in book_data %}
+                    <tr style="height: min-content;">
+                        <td>{{data.id}}</td>
+                        <td>{{data.title}}</td>
+                        <td>{{data.author}}</td>
+                        <td>{{data.quantity}}</td>
+                        <td>{{data.available_quantity}}</td>
+                        <td>{{data.category}}</td>
+                        <td>{{data.publication_year}}</td>
+                        <td>{{data.created_at}}</td>
+                        <td>{{data.updated_at}}</td>
+                        <td>
+                            <ul class="activity_cell">
+                                <li class="load_button" data-id="{{ data.id }}">
+                                    <a style="color: white;">Update Book</a>
+                                </li>                                
+                                <li><a href="{% url 'delete_book' data.id %}">Delete Book</a></li>
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr id="form-row-{{ data.id }}" style="display: none;">
+                        <td colspan="9">
+                            <div class="issue_form">
+                                <h1> Manage Books </h1>
+                                <form id="issueForm" method="POST" action="/update_book/{{ data.id }}">
+                                     {% csrf_token %}
+                                    <label for="book">Book Name</label><br>
+                                    <input type="text" id="book" name="title" autocomplete="off" value="{{data.title}}"><br>
+                
+                                    <label for="user">Book Author</label><br>
+                                    <input type="text" id="user" name="author" value="{{data.author}}" required><br>
+                
+                                    <label for="user">Book Quantity</label><br>
+                                    <input type="number" id="user" name="book_qauntity" value="{{data.quantity}}" required><br>
+    
+                                                        
+                                    <label for="user">Publication Year</label><br>
+                                    <input type="number" id="pub_year" name="pub_year" value="{{data.publication_year}}" required><br><br>
+                
+                                    <input type="submit" value="Update Book" class="submit">
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
             </tbody>
         </table>
     </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const loadButtons = document.querySelectorAll(".load_button");
+            loadButtons.forEach(button => {
+                button.addEventListener("click", (event) => {
+                    event.preventDefault(); // Prevents the default navigation
+                    const id = button.getAttribute("data-id");
+                    const formRow = document.getElementById(`form-row-${id}`);
+                    
+                    if (formRow.style.display === "none" || !formRow.style.display) {
+                        formRow.style.display = "table-row";
+                        button.textContent = "Hide Form";
+                    } else {
+                        formRow.style.display = "none";
+                        button.textContent = "Update Book";
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>

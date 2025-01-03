@@ -4,13 +4,19 @@
         <div class="main-content">
             <h1> Collect Fine </h1>
             <div class="issue_form">
-                <form id="issueForm" method="POST" action="/issue-book/">
+                <form id="issueForm" method="POST" action="/collect_fine/">
                 <!-- {% csrf_token %} -->
                     <label for="book">student id</label><br>
                     <input type="text" id="book" name="book" autocomplete="off"><br>
                     <label for="">show total fine amount </label><br>
-                    <button type="submit">Get fine</button>
-                    <button type="submit">Collect fine</button>
+                    <button type="submit">
+                        <a href="load_fine" style="color: blue;">Get Fine</a>
+                    </button>
+                    <input type="Submit" value="Collect Fine" 
+                    style=" width:fit-content ;
+                            height : 40px ;
+                            border-radius : 15px"
+                    >
                 </form>
                 <!-- <p>error message</p> -->
             </div>

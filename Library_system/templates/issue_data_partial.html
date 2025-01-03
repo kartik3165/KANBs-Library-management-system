@@ -1,0 +1,17 @@
+<h1>Issued Books</h1>
+<table>
+    <tr>
+        <th>Book Title</th>
+        <th>Issue Date</th>
+        <th>Due Date</th>
+        <th>Status</th>
+    </tr>
+    {% for issue in issue_data %}
+    <tr>
+        <td>{{ issue.book.title }}</td>
+        <td>{{ issue.issue_date }}</td>
+        <td>{{ issue.due_date }}</td>
+        <td>{{ issue.status }}</td>
+    </tr>
+    {% endfor %}
+</table>

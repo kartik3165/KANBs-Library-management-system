@@ -3,18 +3,31 @@
     {% block content %}
         <div class="main-content">
             <h1> Manage Books </h1>
-            <div class="issue_form">
-                <form id="issueForm" method="POST" action="/issue-book/">
-                <!-- {% csrf_token %} -->
+            <button id="add">Add Book</button>
+            <div class="issue_form" id="form" style="display: none;">
+                <form id="issueForm" method="POST" action="add_book">
+                {% csrf_token %}
                     <label for="book">Book Name</label><br>
-                    <input type="text" id="book" name="book" autocomplete="off"><br>
-                    <label for="user">Book Quantity</label><br>
-                    <input type="number" id="user" name="user" required><br>
+                    <input type="text" id="book" name="title" autocomplete="off"><br>
+
                     <label for="user">Book Author</label><br>
-                    <input type="text" id="user" name="user" required><br>
-                    <button type="submit">Add Book</button>
+                    <input type="text" id="user" name="author" required><br>
+
+                    <label for="user">Book Quantity</label><br>
+                    <input type="number" id="user" name="book_qauntity" required><br>
+
+                    <label for="user">Department</label><br>
+                        <select name="dept_spinner" id="dept_spinner" >
+                            {% for option in category_data %}
+                                <option value="{{option}}">{{option}}</option>
+                            {% endfor %}
+                    </select><br><br>
+
+                    <label for="user">Publication Year</label><br>
+                    <input type="number" id="pub_year" name="pub_year" required><br><br>
+
+                    <input type="submit" value="Add Book" class="submit">
                 </form>
-                <!-- <p>error message</p> -->
             </div>
 
             <div class="table-container">
@@ -25,25 +38,40 @@
                             <th style="width: 100px;">Book ID</th>
                             <th>Title</th>
                             <th>Author</th>
-                            <th style="width: 50px;">Quantity Available</th>
-                            <th>Action</th>
+                            <th>Added at</th>
+                            <th style="width: 50px;">Category</th>
+                            <th>Quantity</th>
                         </tr>
                     </thead>
                     <tbody>
+                        {% for book in books %}
                         <tr style="height: min-content;">
-                            <td>1</td>
-                            <td>The Great Gatsby</td>
-                            <td>F. Scott Fitzgerald</td>
-                            <td>Available</td>
-                            <td>
-                                <ul class="activity_cell">
-                                    <li><a href="#">Delete</a></li>
-                                </ul>
-                            </td>
+                            <td>{{book.id}}</td>
+                            <td>{{book.title}}</td>
+                            <td>{{book.author}}</td>
+                            <td>{{book.created_at}}</td>
+                            <td>{{book.category}}</td>
+                            <td>{{book.quantity}}</td>
                         </tr>
+                        {% endfor %}
                     </tbody>
                 </table>
-                <a class="btn" href="{% static 'book_table' %}">See All</a>
+                <a class="btn" href="{% url 'book_table' %}">See All</a>
             </div>
         </div>
+        <script>
+            // JavaScript to toggle visibility
+           const button = document.getElementById('add');
+           const div = document.getElementById('form');
+
+           button.addEventListener('click', () => {
+               if (div.style.display === 'none' || div.style.display === '') {
+                   div.style.display = 'block';
+                   button.textContent = 'Hide';
+               } else {
+                   div.style.display = 'none';
+                   button.textContent = 'Add Book';
+               }
+           });
+       </script>
     {% endblock %}>

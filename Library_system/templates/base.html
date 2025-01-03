@@ -19,9 +19,12 @@
             <h2>Menu</h2>
             <ul>
                 <li><a href="{% url 'home' %}">Dashboard</a></li>
-                <li><a href="{% url 'manage_book' %}">Manage Books</a></li>
-                <li><a href="{% url 'manage_student' %}">Manage Students</a></li>
+                <li><a href="{% url 'manage_book' %}">Add Books</a></li>
+                <li><a href="{% url 'book_table' %}">Books List</a></li>
+                <li><a href="{% url 'manage_student' %}">Add Students</a></li>
+                <li><a href="{% url 'student_table' %}">Student List</a></li>
                 <li><a href="{% url 'issue_book' %}">Issue Books</a></li>
+                <li><a href="{% url 'issue_table' %}">Issued Book List</a></li>
                 <li><a href="{% url 'return_book' %}">Return Books</a></li>
                 <li><a href="{% url 'fine' %}">Collect fine</a></li>
 

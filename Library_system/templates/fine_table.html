@@ -15,7 +15,7 @@
     <div class="table-container">
         <div class="issue_form">
             <form id="issueForm" method="POST" action="/issue-book/">
-            <!-- {% csrf_token %} -->
+            {% csrf_token %}
                 <label for="book">Name</label><br>
                 <input type="text" id="book" name="book" autocomplete="off"><br>
                 <label for="user">Fine</label><br>

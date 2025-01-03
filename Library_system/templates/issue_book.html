@@ -4,14 +4,15 @@
         <div class="main-content">
             <h1> Issue Book </h1>
             <div class="issue_form">
-                <form id="issueForm" method="POST" action="/issue-book/">
-                <!-- {% csrf_token %} -->
-                    <label for="book">Book  :</label>
-                    <input type="text" id="book" name="book" autocomplete="off">
-                    <ul id="suggestions"></ul>
-                    <label for="user">UserID:</label>
-                    <input type="text" id="user" name="user" required><br>
-                    <button type="submit">Issue Book</button>
+                <form id="issueForm" method="POST" action="/issue_book_form">
+                {% csrf_token %}
+                    <label for="book">Book ID :</label><br>
+                    <input type="number" id="book" name="book_id" autocomplete="off"><br>
+
+                    <label for="user">Student ID</label><br>
+                    <input type="number" id="user" name="student_id" required><br><br>
+
+                    <input type="Submit" value="Issue Book">
                 </form>
                 <!-- <p>error message</p> -->
             </div>
@@ -24,27 +25,21 @@
                             <th>Book Name</th>
                             <th>Student Name</th>
                             <th>Issue Date</th>
+                            <th>Due Date</th>
+                            <th>Status</th>
                         </tr>
                     </thead>
                     <tbody>
+                        {% for data in issue_data %}
                         <tr>
-                            <td>1</td>
-                            <td>The Great Gatsby</td>
-                            <td>F. Scott Fitzgerald</td>
-                            <td>Available</td>
+                            <td>{{data.id}}</td>
+                            <td>{{data.book.title}}</td>
+                            <td>{{data.student.name}}</td>
+                            <td>{{data.issue_date}}</td>
+                            <td>{{data.due_date}}</td>
+                            <td>{{data.status}}</td>
                         </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>1984</td>
-                            <td>George Orwell</td>
-                            <td>Issued</td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td>To Kill a Mockingbird</td>
-                            <td>Harper Lee</td>
-                            <td>Available</td>
-                        </tr>
+                        {% endfor %}
                     </tbody>
                 </table>
                 <a class="btn" href="{% url 'issue_table' %}">See All</a>
