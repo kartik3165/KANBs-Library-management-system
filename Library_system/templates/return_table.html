@@ -19,22 +19,30 @@
             <thead>
                 <tr>
                     <th>Issue ID</th>
+                    <th>Book ID</th>
                     <th>Book Name</th>
+                    <th>Student ID</th>
                     <th>Student Name</th>
-                    <th>Student id</th>
+                    <th>Issue Date</th>
+                    <th>Due Date</th>
                     <th>Return Date</th>
                     <th>Fine</th>
                 </tr>
             </thead>
             <tbody>
+                {% for data in issue_data %}
                 <tr>
-                    <td>1</td>
-                    <td>The Great Gatsby</td>
-                    <td>F. Scott Fitzgerald</td>
-                    <td>smc</td>
-                    <td>sdf</td>
-                    <td>df</td>
+                    <td>{{data.id}}</td>
+                    <td>{{data.book.id}}</td>
+                    <td>{{data.book.title}}</td>
+                    <td>{{data.student.id}}</td>
+                    <td>{{data.student.name}}</td>
+                    <td>{{data.issue_date}}</td>
+                    <td>{{data.due_date}}</td>
+                    <td>{{data.return_date}}</td>
+                    <td>00</td>
                 </tr>
+                {% endfor %}
             </tbody>
         </table>
     </div>

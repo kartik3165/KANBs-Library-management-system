@@ -1,9 +1,11 @@
 from django.shortcuts import render , HttpResponse , redirect
+from django.contrib import messages
 from . models import Department , Student , Book , Book_category , BookIssue , Fine
 from datetime import datetime , timedelta
 from decimal import Decimal
 import json 
 from django.http import JsonResponse
+from django.contrib.messages import get_messages
 
 # Create your views here.
 
@@ -97,7 +99,11 @@ def delete_student(request , id):
 
 def student_table(request):
     student_data = Student.objects.all()
-    return render(request , 'student_table.html',{'student_data' : student_data})
+    student_with_fine = []
+    for student in student_data:
+        fine = get_fine(student.id) 
+        student_with_fine.append({'student': student, 'fine': fine})  
+    return render(request, 'student_table.html', {'student_with_fine': student_with_fine})
 
 def load_student(request, id):
     dept_data = Department.objects.all()
@@ -122,7 +128,7 @@ def update_student(request , id):
 def issue_book(request):
     student_data = Student.objects.all()
     book_data = Book.objects.all()
-    issue_data = BookIssue.objects.all().order_by('-id')[:5]
+    issue_data = BookIssue.objects.filter(return_date__isnull = True).order_by('-id')[:5]
     return render(request , 'issue_book.html' , { 'student_data' : student_data , 'book_data' : book_data , 'issue_data' : issue_data})
 
 def issue_book_form(request):
@@ -149,15 +155,15 @@ def issue_book_form(request):
     return HttpResponse('book did not issued')
 
 def issue_table(request):
-    issue_data = BookIssue.objects.all()
+    issue_data = BookIssue.objects.filter(return_date__isnull = True)
     return render(request , 'issue_table.html' , { 'issue_data' : issue_data })
 
 def return_book(request):
-    return render(request , 'return_book.html' , {  })
+    issue_data = BookIssue.objects.filter(return_date__isnull = False).order_by('-id')[:5]
+    return render(request , 'return_book.html' , {'issue_data' : issue_data})
 
-def get_issue_data(request):
+def get_issue_data(request): #gpt help
     if request.method == 'POST':
-        # Parse the JSON data from the request body
         data = json.loads(request.body)
         stud_id = data.get('student_id')
         
@@ -181,23 +187,18 @@ def get_issue_data(request):
         # Render the form if it's a GET request (optional)
         return render(request, 'issue_data_form.html')
 
-
 def return_order(request, id):
     try:
-        # Fetch the book issue record by ID
         issue_book = BookIssue.objects.get(id=id)
-        book_info = issue_book.book  # Access the related book
+        book_info = issue_book.book 
 
-        # Check if the book has already been returned
         if issue_book.return_date:
-            return HttpResponse("Book has already been returned.", status=400)
+            return HttpResponse("Book has already been returned.")
 
-        # Handle overdue case
         if issue_book.is_overdue():
             days_overdue = (datetime.now().date() - issue_book.due_date).days
-            fine_amount = days_overdue * 6  # Assuming a fine of 6 units per day
+            fine_amount = days_overdue * 6 
 
-            # Create a fine record
             Fine.objects.create(
                 book_issue=issue_book,
                 amount=fine_amount,
@@ -221,16 +222,75 @@ def return_order(request, id):
     except Exception as e:
         return HttpResponse(f"An error occurred: {str(e)}", status=500)
 
-
 def return_table(request):
-    return render(request , 'return_table.html')
+    issue_data = BookIssue.objects.filter(return_date__isnull = False)
+    return render(request , 'return_table.html' , {'issue_data' : issue_data})
     
 def fine_table(request):
     return render(request , 'fine_table.html')
 
 def fine(request):
-    return render(request , 'fine.html')
+    issue_data = Fine.objects.all()
+    data_withFine = []
+    for item in issue_data:
+        fine_amount = item.amount  # Assuming fine amount is stored in Fine model
+        data_withFine.append({
+            'book_issue': item.book_issue,
+            'fine': fine_amount,
+        })
 
+    return render(request, 'fine.html', {'data': data_withFine})
+
+
+def collect_fine(request , issue_id ):
+    fine_info = Fine.objects.filter( book_issue__student_id = id)
+    print(fine_info)
+    for fine in fine_info:
+        print(fine.amount)
+    
+    fine_info2 = Fine.objects.filter( id = issue_id)
+    print(fine_info2)
+    for fine2 in fine_info2:
+        print(fine2.amount)
+
+    if request.method == 'POST':
+        amt = request.POST['amount']
+
+
+
+
+def get_fine(id):
+    try:
+        fine_info = Fine.objects.filter(book_issue__student_id = id)
+        total_fine = Decimal('0.00')
+
+        for fine in fine_info:
+            total_fine += fine.amount
+
+        if fine_info.exists():
+            return total_fine
+        else:
+            return '0.00'
+        
+    except Fine.DoesNotExist:
+        return '0.00'
+    
+def get_fine_for_issueID(id):
+    try:
+        fine_info = Fine.objects.filter(book_issue__student_id = id)
+        total_fine = Decimal('0.00')   
+
+        for fine in fine_info:
+            print(fine.amount)
+
+        if fine_info.exists():
+            return total_fine
+        else:
+            return '0.00'
+        
+    except Fine.DoesNotExist:
+        return '0.00'
+    
 def calculate_fine(book_issue):
     # Calculate fine based on overdue days
     if book_issue.due_date < datetime.now().date() and not book_issue.return_date:
@@ -238,7 +298,6 @@ def calculate_fine(book_issue):
         return Decimal('6.00') * days_overdue
     return Decimal('0.00')
 
-# Example function for creating or updating fine
 def create_or_update_fine(book_issue_id):
     try:
         book_issue = BookIssue.objects.get(id=book_issue_id)

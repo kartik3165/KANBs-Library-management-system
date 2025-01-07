@@ -1,51 +1,90 @@
-{% extends 'base.html' %}
 {% load static %}
-    {% block content %}
-        <div class="main-content">
-            <h1> Collect Fine </h1>
-            <div class="issue_form">
-                <form id="issueForm" method="POST" action="/collect_fine/">
-                <!-- {% csrf_token %} -->
-                    <label for="book">student id</label><br>
-                    <input type="text" id="book" name="book" autocomplete="off"><br>
-                    <label for="">show total fine amount </label><br>
-                    <button type="submit">
-                        <a href="load_fine" style="color: blue;">Get Fine</a>
-                    </button>
-                    <input type="Submit" value="Collect Fine" 
-                    style=" width:fit-content ;
-                            height : 40px ;
-                            border-radius : 15px"
-                    >
-                </form>
-                <!-- <p>error message</p> -->
-            </div>
-
-            <div class="table-container">
-                <p style="color: white;"> *recent 5 entries </p>
-                <table>
-                    <thead>
-                        <tr>
-                            <th style="width: 100px;">Student ID</th>
-                            <th>Name</th>
-                            <th>Department</th>
-                            <th>Issue Id</th>
-                            <th style="width: 50px;">Total Fine</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr style="height: min-content;">
-                            <td>1</td>
-                            <td>comp</td>
-                            <td>The Great Gatsby</td>
-                            <td>F. Scott Fitzgerald</td>
-                            <td>Available</td>
-                            <td>Paid </td>
-                        </tr>
-                    </tbody>
-                </table>
-                <a class="btn" href="{% url 'student_table' %}">See All</a>
-            </div>
-        </div>
-{% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static '/css/tables.css' %}">
+    <link rel="stylesheet" href="{% static '/css/manage_student.css' %}">
+</head>
+<body>
+    <div class="navbar">
+        <h1>Library Dashboard</h1>
+    </div>
+    <div class="table-container">
+        <h2>Collect Fine</h2>
+        <label style="color: black;">Search</label>
+        <input type="text">
+        <a href="{% url 'manage_student' %}" 
+            style="background-color: black; 
+                color : white;
+                padding : 4px"
+                >Search</a>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 100px;">Student ID</th>
+                    <th>Issue ID</th>
+                    <th>Name</th>
+                    <th>Department</th>
+                    <th>Phone No.</th>
+                    <th style="width: 50px;">Total Fine</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for item in data %}
+                <tr style="height: min-content;">
+                    <td>{{ item.book_issue.student.id }}</td>
+                    <th>{{ item.book_issue.id }}</th>
+                    <td>{{ item.book_issue.student.name }}</td>
+                    <td>{{ item.book_issue.student.department }}</td>
+                    <td>{{ item.book_issue.student.phone }}</td>
+                    <td>{{ item.fine }}</td>
+                    <td>
+                        <ul class="activity_cell">
+                            <li class="load_button" data-id="{{ item.book_issue.id }}">
+                                <a style="color: white;">Collect Fine</a>
+                            </li>                                                        
+                        </ul>
+                    </td>
+                </tr>
+                <tr id="form-row-{{  item.book_issue.id}}" style="display: none;">
+                    <td colspan="9">
+                        <div class="issue_form">
+                            <form id="issueForm" method="post" action="/collect_fine/{{item.book_issue.id}} ">
+                                {% csrf_token %}
+                                <label for="book">Name</label><br>
+                                <input type="text" id="name" name="name" autocomplete="off" value="{{ item.fine }}"><br>            
+                                <input type="submit" value="Collect Fine" class="submit">
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const loadButtons = document.querySelectorAll(".load_button");
+            loadButtons.forEach(button => {
+                button.addEventListener("click", (event) => {
+                    event.preventDefault(); // Prevents the default navigation
+                    const id = button.getAttribute("data-id");
+                    const formRow = document.getElementById(`form-row-${id}`);
+                    
+                    if (formRow.style.display === "none" || !formRow.style.display) {
+                        formRow.style.display = "table-row";
+                        button.textContent = "Hide Form";
+                    } else {
+                        formRow.style.display = "none";
+                        button.textContent = "Collect Fine";
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

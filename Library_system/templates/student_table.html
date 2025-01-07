@@ -36,22 +36,22 @@
                 </tr>
             </thead>
             <tbody>
-                {% for data in student_data %}
+            {% for item in student_with_fine %}
                 <tr style="height: min-content;">
-                    <td>{{data.id}}</td>
-                    <td>{{data.name}}</td>
-                    <td>{{data.email}}</td>
-                    <td>{{data.department}}</td>
-                    <td>{{data.phone}}</td>
-                    <td>{{data.created_at}}</td>
-                    <td>{{data.updated_at}}</td>
-                    <td>00</td>
+                    <td>{{ item.student.id }}</td>
+                    <td>{{ item.student.name }}</td>
+                    <td>{{ item.student.email }}</td>
+                    <td>{{ item.student.department }}</td>
+                    <td>{{ item.student.phone }}</td>
+                    <td>{{ item.student.created_at }}</td>
+                    <td>{{ item.student.updated_at }}</td>
+                    <td>{{ item.fine }}</td>
                     <td>
                         <ul class="activity_cell">
-                            <li class="load_button" data-id="{{ data.id }}">
+                            <li class="load_button" data-id="{{ item.student.id }}">
                                 <a style="color: white;">Update Student</a>
                             </li>                                                        
-                            <li><a href="{% url 'delete_student' data.id %}">Delete student</a></li>
+                            <li><a href="{% url 'delete_student' item.student.id %}">Delete student</a></li>
                             <li><a href="{% url 'fine' %}">Update Fine</a></li>
                         </ul>
                     </td>
@@ -75,7 +75,7 @@
                         </div>
                     </td>
                 </tr>
-                {% endfor %}
+            {% endfor %}
             </tbody>
         </table>
     </div>

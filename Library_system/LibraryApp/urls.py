@@ -30,4 +30,5 @@ urlpatterns = [
     
     path('fine' , views.fine , name = 'fine'),
     path('fine_table' , views.fine_table , name = 'fine_table'),
+    # path('collect_fine/<int:issue_id>' , views.collect_fine , name = 'collect_fine')
 ]
