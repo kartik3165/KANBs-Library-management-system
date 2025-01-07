@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Fine Table</title>
     <link rel="stylesheet" href="{% static '/css/tables.css' %}">
     <link rel="stylesheet" href="{% static '/css/manage_student.css' %}">
 </head>
@@ -13,44 +13,35 @@
         <h1>Library Dashboard</h1>
     </div>
     <div class="table-container">
-        <div class="issue_form">
-            <form id="issueForm" method="POST" action="/issue-book/">
-            {% csrf_token %}
-                <label for="book">Name</label><br>
-                <input type="text" id="book" name="book" autocomplete="off"><br>
-                <label for="user">Fine</label><br>
-                <input type="number" id="user" name="user" required><br>
-                <button type="submit">Update fine</button>
-            </form>
-            <!-- <p>error message</p> -->
-        </div>
-        <h2> Student List </h2>
-        <label style="color: black;">Search</label>
-        <input type="text">
+        <h2>Fine Table</h2>
         <table>
             <thead>
                 <tr>
-                    <th style="width: 100px;">Student ID</th>
-                    <th>Name</th>
-                    <th>Department</th>
-                    <th>Admission Date</th>
-                    <th style="width: 50px;">Total Fine</th>
-                    <th>Action</th>
+                    <th>Student ID</th>
+                    <th>Student Name</th>
+                    <th>Total Fine</th>
+                    <th>Paid Fine</th>
+                    <th>Remaining Fine</th>
+                    <th>Transaction Details</th>
                 </tr>
             </thead>
             <tbody>
-                <tr style="height: min-content;">
-                    <td>1</td>
-                    <td>comp</td>
-                    <td>The Great Gatsby</td>
-                    <td>F. Scott Fitzgerald</td>
-                    <td>Available</td>
-                    <td>
-                        <ul class="activity_cell">
-                            <li><a href="#">Update Fine</a></li>
-                        </ul>
-                    </td>
-                </tr>
+                {% for group in grouped_transactions %}
+                    <tr>
+                        <td>{{ group.student_id }}</td>
+                        <td>{{ group.student_name }}</td>
+                        <td>{{ group.total_fine }}</td>
+                        <td>{{ group.paid_fine }}</td>
+                        <td>{{ group.remaining_fine }}</td>
+                        <td>
+                            <ul>
+                                {% for transaction in group.transactions %}
+                                    <li>Transaction ID: {{ transaction.id }} - Amount: {{ transaction.amount }} - Date: {{ transaction.payment_date }}</li>
+                                {% endfor %}
+                            </ul>
+                        </td>
+                    </tr>
+                {% endfor %}
             </tbody>
         </table>
     </div>

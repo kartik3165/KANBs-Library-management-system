@@ -53,11 +53,12 @@
                 <tr id="form-row-{{  item.book_issue.id}}" style="display: none;">
                     <td colspan="9">
                         <div class="issue_form">
-                            <form id="issueForm" method="post" action="/collect_fine/{{item.book_issue.id}} ">
+                            <form method="POST" action="{% url 'collect_fine' item.book_issue.id %}">
                                 {% csrf_token %}
-                                <label for="book">Name</label><br>
-                                <input type="text" id="name" name="name" autocomplete="off" value="{{ item.fine }}"><br>            
-                                <input type="submit" value="Collect Fine" class="submit">
+                                <label for="payment_amount">Payment Amount</label><br>
+                                <input type="number" step="0.01" name="payment_amount" min="0" required><br>
+                            
+                                <input type="submit" value="Pay" class="submit">
                             </form>
                         </div>
                     </td>

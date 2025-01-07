@@ -28,7 +28,7 @@ urlpatterns = [
     path('get_issue_data/' , views.get_issue_data , name = 'get_issue_data'),
     path('return_order/<int:id>' , views.return_order , name = 'return_order'),
     
-    path('fine' , views.fine , name = 'fine'),
+    path('fines/', views.fines, name='fines'),
     path('fine_table' , views.fine_table , name = 'fine_table'),
-    # path('collect_fine/<int:issue_id>' , views.collect_fine , name = 'collect_fine')
+    path('collect_fine/<int:issue_id>' , views.collect_fine , name = 'collect_fine')
 ]

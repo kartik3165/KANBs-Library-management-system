@@ -1,11 +1,13 @@
-from django.shortcuts import render , HttpResponse , redirect
+from django.shortcuts import render , HttpResponse , redirect , get_object_or_404
 from django.contrib import messages
-from . models import Department , Student , Book , Book_category , BookIssue , Fine
+from . models import Department , Student , Book , Book_category , BookIssue , Fine , Transaction
 from datetime import datetime , timedelta
 from decimal import Decimal
 import json 
 from django.http import JsonResponse
 from django.contrib.messages import get_messages
+from itertools import groupby
+from operator import itemgetter
 
 # Create your views here.
 
@@ -226,10 +228,40 @@ def return_table(request):
     issue_data = BookIssue.objects.filter(return_date__isnull = False)
     return render(request , 'return_table.html' , {'issue_data' : issue_data})
     
-def fine_table(request):
-    return render(request , 'fine_table.html')
+from django.shortcuts import render
+from itertools import groupby
+from .models import Transaction
 
-def fine(request):
+def fine_table(request):
+    # Get all transactions and include related fields for student and book
+    transactions = Transaction.objects.all().select_related('book_issue__student', 'book_issue__book').order_by('book_issue__student_id', '-payment_date')
+
+    # Group transactions by student
+    grouped_transactions = []
+    for key, group in groupby(transactions, key=lambda x: x.book_issue.student.id):
+        student_transactions = list(group)
+
+        # Calculate total fine
+        total_fine = sum([transaction.amount for transaction in student_transactions])
+
+        # Calculate paid fine (consider transaction paid if payment_date is not null)
+        paid_fine = sum([transaction.amount for transaction in student_transactions if transaction.payment_date is not None])
+
+        # Calculate remaining fine
+        remaining_fine = total_fine - paid_fine
+
+        grouped_transactions.append({
+            'student_id': key,
+            'student_name': student_transactions[0].book_issue.student.name,
+            'total_fine': total_fine,
+            'paid_fine': paid_fine,
+            'remaining_fine': remaining_fine,
+            'transactions': student_transactions
+        })
+    
+    return render(request, 'fine_table.html', {'grouped_transactions': grouped_transactions})
+
+def fines(request):
     issue_data = Fine.objects.all()
     data_withFine = []
     for item in issue_data:
@@ -241,23 +273,48 @@ def fine(request):
 
     return render(request, 'fine.html', {'data': data_withFine})
 
+def collect_fine(request, issue_id):
+    book_issue = get_object_or_404(BookIssue, id = issue_id)
+    fine = Fine.objects.filter(book_issue=book_issue).first()
 
-def collect_fine(request , issue_id ):
-    fine_info = Fine.objects.filter( book_issue__student_id = id)
-    print(fine_info)
-    for fine in fine_info:
-        print(fine.amount)
-    
-    fine_info2 = Fine.objects.filter( id = issue_id)
-    print(fine_info2)
-    for fine2 in fine_info2:
-        print(fine2.amount)
+    if not fine:
+        messages.error(request, "Fine not found for this issue.")
+        return redirect('some_view')  # Redirect to an appropriate view
 
     if request.method == 'POST':
-        amt = request.POST['amount']
+        payment_amount = request.POST.get('payment_amount')
 
+        try:
+            payment_amount = Decimal(payment_amount)
+        except:
+            messages.error(request, "Invalid amount.")
+            return redirect('fines', issue_id=issue_id)
 
+        if payment_amount <= 0:
+            messages.error(request, "Amount must be greater than zero.")
+            return redirect('fines', issue_id=issue_id)
 
+        # Record the payment in the Transaction table
+        transaction = Transaction(
+            book_issue=book_issue,
+            amount=payment_amount
+        )
+        transaction.save()
+
+        # Deduct the payment from the fine
+        fine.amount -= payment_amount
+        fine.save()
+
+        # If fine is fully paid, mark as paid
+        if fine.amount <= 0:
+            fine.payment_status = 'paid'
+            fine.save()
+
+        messages.success(request, f"Payment of {payment_amount} recorded successfully.")
+        return redirect('fines')
+
+    # Render the form to collect fine
+    return render(request, 'fines.html', {'book_issue': book_issue, 'fine': fine})
 
 def get_fine(id):
     try:
