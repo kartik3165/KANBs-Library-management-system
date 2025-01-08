@@ -1,17 +1,6 @@
+{% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="{% static '/css/tables.css' %}">
-    <link rel="stylesheet" href="{% static '/css/manage_student.css' %}">
-</head>
-<body>
-    <div class="navbar">
-        <h1>Library Dashboard</h1>
-    </div>
+    {% block content %}
     <div class="table-container">
         <h2> Student List </h2>
         <label style="color: black;">Search</label>
@@ -52,7 +41,7 @@
                                 <a style="color: white;">Update Student</a>
                             </li>                                                        
                             <li><a href="{% url 'delete_student' item.student.id %}">Delete student</a></li>
-                            <li><a href="{% url 'fine' %}">Update Fine</a></li>
+                            <li><a href="{% url 'fines' %}">Update Fine</a></li>
                         </ul>
                     </td>
                 </tr>
@@ -99,5 +88,4 @@
             });
         });
     </script>
-</body>
-</html>
+    {% endblock %}

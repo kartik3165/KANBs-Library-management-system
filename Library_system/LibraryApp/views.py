@@ -228,27 +228,32 @@ def return_table(request):
     issue_data = BookIssue.objects.filter(return_date__isnull = False)
     return render(request , 'return_table.html' , {'issue_data' : issue_data})
     
-from django.shortcuts import render
 from itertools import groupby
-from .models import Transaction
 
 def fine_table(request):
-    # Get all transactions and include related fields for student and book
-    transactions = Transaction.objects.all().select_related('book_issue__student', 'book_issue__book').order_by('book_issue__student_id', '-payment_date')
+    from itertools import groupby
+    from django.db.models import Sum
 
-    # Group transactions by student
+    transactions = Transaction.objects.all().select_related('book_issue__student', 'book_issue__book').order_by('book_issue__student_id', '-payment_date')
     grouped_transactions = []
+
     for key, group in groupby(transactions, key=lambda x: x.book_issue.student.id):
         student_transactions = list(group)
 
+        # Debug: Print student and their transactions
+        print(f"Student ID: {key}, Transactions: {student_transactions}")
+
         # Calculate total fine
         total_fine = sum([transaction.amount for transaction in student_transactions])
+        print(f"Total Fine for Student {key}: {total_fine}")
 
-        # Calculate paid fine (consider transaction paid if payment_date is not null)
+        # Calculate paid fine
         paid_fine = sum([transaction.amount for transaction in student_transactions if transaction.payment_date is not None])
+        print(f"Paid Fine for Student {key}: {paid_fine}")
 
         # Calculate remaining fine
         remaining_fine = total_fine - paid_fine
+        print(f"Remaining Fine for Student {key}: {remaining_fine}")
 
         grouped_transactions.append({
             'student_id': key,

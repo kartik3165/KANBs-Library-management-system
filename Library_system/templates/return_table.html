@@ -1,16 +1,6 @@
+{% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="{% static '/css/tables.css' %}">
-</head>
-<body>
-    <div class="navbar">
-        <h1>Library Dashboard</h1>
-    </div>
+    {% block content %}
     <h2> Return book List </h2>
         <label style="color: black;">Search</label>
         <input type="text">
@@ -46,5 +36,4 @@
             </tbody>
         </table>
     </div>
-</body>
-</html>
+    {% endblock %}

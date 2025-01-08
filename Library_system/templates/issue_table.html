@@ -1,20 +1,10 @@
+{% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="{% static '/css/tables.css' %}">
-    <link rel="stylesheet" href="{% static '/css/issue_book.css' %}">
-</head>
-<body>
-    <div class="navbar">
-        <h1>Library Dashboard</h1>
-    </div>
+    {% block content %}
+<div class="main" style="display: flex; flex-direction : column;">
     <h2> Issue Book List </h2>
         <label style="color: black;">Search</label>
-        <input type="text">
+        <input type="text" style="width: 150px;">
     <div class="table-container">
         <table>
             <thead>
@@ -47,5 +37,5 @@
             </tbody>
         </table>
     </div>
-</body>
-</html>
+</div>
+    {% endblock %}

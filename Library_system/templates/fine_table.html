@@ -1,17 +1,6 @@
+{% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fine Table</title>
-    <link rel="stylesheet" href="{% static '/css/tables.css' %}">
-    <link rel="stylesheet" href="{% static '/css/manage_student.css' %}">
-</head>
-<body>
-    <div class="navbar">
-        <h1>Library Dashboard</h1>
-    </div>
+    {% block content %}
     <div class="table-container">
         <h2>Fine Table</h2>
         <table>
@@ -36,7 +25,9 @@
                         <td>
                             <ul>
                                 {% for transaction in group.transactions %}
-                                    <li>Transaction ID: {{ transaction.id }} - Amount: {{ transaction.amount }} - Date: {{ transaction.payment_date }}</li>
+                                    <li>Transaction ID: {{ transaction.id }} <br>
+                                        Amount: {{ transaction.amount }} <br> 
+                                        Date: {{ transaction.payment_date }}</li>
                                 {% endfor %}
                             </ul>
                         </td>
@@ -45,5 +36,4 @@
             </tbody>
         </table>
     </div>
-</body>
-</html>
+    {% endblock %}
