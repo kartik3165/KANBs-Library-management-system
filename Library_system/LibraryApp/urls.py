@@ -1,6 +1,9 @@
 from django.urls import path 
 from . import views
 from django.contrib.auth.views import LogoutView
+from django.conf.urls import handler404
+
+handler404 = 'myapp.views.custom_404'
 
 urlpatterns = [
     path('' , views.home , name = 'home'),

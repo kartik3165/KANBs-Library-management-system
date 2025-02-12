@@ -410,3 +410,6 @@ def signup_view(request):
     else:
         form = UserCreationForm()
     return render(request, 'signup.html', {'form': form})
+
+def custom_404(request, exception):
+    return render(request, '404.html', status=404)
