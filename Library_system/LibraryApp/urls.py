@@ -1,8 +1,12 @@
 from django.urls import path 
 from . import views
+from django.contrib.auth.views import LogoutView
 
 urlpatterns = [
     path('' , views.home , name = 'home'),
+    path('login/', views.login_view, name='login'),
+    path('signup/', views.signup_view, name='signup'),
+    path('logout/', LogoutView.as_view(next_page='login'), name='logout'),
     
     path('manage_book' , views.manage_book , name = 'manage_book'),
     path('book_table' , views.book_table , name = 'book_table'),

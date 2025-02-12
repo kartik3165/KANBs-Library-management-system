@@ -2,15 +2,16 @@ from django.shortcuts import render , HttpResponse , redirect , get_object_or_40
 from django.contrib import messages
 from . models import Department , Student , Book , Book_category , BookIssue , Fine , Transaction
 from datetime import datetime , timedelta
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import login, authenticate
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from decimal import Decimal
 import json 
 from django.http import JsonResponse
-from django.contrib.messages import get_messages
 from itertools import groupby
-from operator import itemgetter
 
 # Create your views here.
-
+@login_required(login_url='login')
 def home(request):
     stud_count = Student.objects.all().count()
     print('count' , stud_count)
@@ -228,8 +229,6 @@ def return_table(request):
     issue_data = BookIssue.objects.filter(return_date__isnull = False)
     return render(request , 'return_table.html' , {'issue_data' : issue_data})
     
-from itertools import groupby
-
 def fine_table(request):
     from itertools import groupby
     from django.db.models import Sum
@@ -374,3 +373,40 @@ def create_or_update_fine(book_issue_id):
     except BookIssue.DoesNotExist:
         # Handle case where BookIssue does not exist
         return None
+
+def login_view(request):
+    """
+    Handle user login with built-in Django authentication
+    """
+    if request.user.is_authenticated:
+        return redirect('home')
+        
+    if request.method == 'POST':
+        form = AuthenticationForm(data=request.POST)
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                login(request, user)
+                return redirect('home')
+    else:
+        form = AuthenticationForm()
+    return render(request, 'login.html', {'form': form})
+
+def signup_view(request):
+    """
+    Handle new user registration
+    """
+    if request.user.is_authenticated:
+        return redirect('home')
+        
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect('home')
+    else:
+        form = UserCreationForm()
+    return render(request, 'signup.html', {'form': form})
