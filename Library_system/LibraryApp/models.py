@@ -96,3 +96,25 @@ class Transaction(models.Model):
 
     def __str__(self):
         return f"Transaction for {self.book_issue} - Amount: {self.amount}"
+
+
+
+# @api_view(['GET'])
+# def get_request(request):
+#     if request.method == 'GET':
+#         data = people.objects.all()
+#         serializer = pepoleSerializer(data , many = True)
+#         return Response(serializer.data)
+#     else:
+#         return Response(serializer.errors)
+
+# @api_view(['POST'])
+# def post_request(request):
+#     if request.method == 'POST':
+#         data = request.data
+#         serializer = pepoleSerializer(data = data)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data)
+#     else:
+#         return Response(serializer.errors)

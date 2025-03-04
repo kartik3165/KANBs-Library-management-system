@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="3535aca2-5275-4ef9-a549-ed15f0c250bd" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/Library_system/LibraryApp/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/Library_system/LibraryApp/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Library_system/LibraryApp/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/Library_system/LibraryApp/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Library_system/Library_system/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/Library_system/Library_system/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Library_system/Library_system/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/Library_system/Library_system/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Library_system/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/Library_system/db.sqlite3" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ProjectId" id="2td0rtPjltCx2Gs8S7q1eOVSTUt" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-python-sdk-0509580d9d50-746f403e7f0c-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-241.14494.241" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="3535aca2-5275-4ef9-a549-ed15f0c250bd" name="Changes" comment="" />
+      <created>1740666847054</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1740666847054</updated>
+    </task>
+    <servers />
+  </component>
+</project>

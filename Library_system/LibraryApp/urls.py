@@ -3,7 +3,7 @@ from . import views
 from django.contrib.auth.views import LogoutView
 from django.conf.urls import handler404
 
-handler404 = 'myapp.views.custom_404'
+# handler404 = 'myapp.views.custom_404'
 
 urlpatterns = [
     path('' , views.home , name = 'home'),
@@ -39,3 +39,13 @@ urlpatterns = [
     path('fine_table' , views.fine_table , name = 'fine_table'),
     path('collect_fine/<int:issue_id>' , views.collect_fine , name = 'collect_fine')
 ]
+
+
+# from App_get_post.views import get_request , post_request
+# from django.contrib import admin
+# from django.urls import path
+
+# urlpatterns = [
+#     path('get' , get_request),
+#     path('post', post_request)
+# ]
